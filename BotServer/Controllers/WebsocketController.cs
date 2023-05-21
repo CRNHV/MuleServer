@@ -1,4 +1,5 @@
-﻿using BotServer.Lib.Handlers.Interfaces;
+﻿using System.Text;
+using BotServer.Lib.Handlers.Interfaces;
 using BotServer.Lib.Session.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +32,9 @@ public class WebSocketController : ControllerBase
         }
         else
         {
-
+            this.Response.StatusCode = 400;
+            await Response.BodyWriter.WriteAsync(Encoding.ASCII.GetBytes("Error"));
+            await Response.StartAsync();
         }
     }
 }
