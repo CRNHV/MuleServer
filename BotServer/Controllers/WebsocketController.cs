@@ -17,8 +17,6 @@ public class WebSocketController : ControllerBase
         _botSessionHolder = botSessionHolder;
     }
 
-
-
     [Route("/ws")]
     public async Task AcceptWebsocket()
     {
@@ -35,11 +33,5 @@ public class WebSocketController : ControllerBase
         {
 
         }
-    }
-
-    [Route("sessions")]
-    public async Task<IActionResult> GetSessions()
-    {
-        return Ok(_botSessionHolder.GetSessions());
     }
 }
