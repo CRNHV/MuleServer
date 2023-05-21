@@ -39,6 +39,7 @@ internal sealed class MessageHandler : IMessageHandler
                 if (requestHandler.RequestAction == request.Action)
                 {
                     await requestHandler.HandleRequestAsync(request);
+                    return;
                 }
             }
         }
