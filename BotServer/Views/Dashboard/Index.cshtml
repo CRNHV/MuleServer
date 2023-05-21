@@ -1,0 +1,26 @@
+﻿@using BotServer.Lib.Data.Models;
+@model List<BotSession>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="columns">
+    @foreach (BotSession bot in Model)
+    {
+        <div class="column is-one-quarter">
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="title is-4">RSN: @bot.Bot.Rsn</p>
+                            <p class="is-6">Bot type: @bot.Bot.BotType</p>
+                            <p class="is-6">Farm type: @bot.Bot.FarmType</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
