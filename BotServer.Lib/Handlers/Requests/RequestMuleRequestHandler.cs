@@ -6,7 +6,6 @@ using BotServer.Lib.Data.Requests.Server;
 using BotServer.Lib.Handlers.Interfaces;
 using BotServer.Lib.Session.Interfaces;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace BotServer.Lib.Handlers.Requests;
 
@@ -42,9 +41,12 @@ internal sealed class RequestMuleRequestHandler : BaseRequestHandler, IRequestHa
             return;
         }
 
+        var botMuleRequest = muleRequest.Copy();
+        botMuleRequest.Rsn = muleSession.Bot.Rsn;
+
         // Send confirmation to the bot and tell the mule to start 
         ServerRequest<MuleRequest> muleStartMuleRequest = new(RequestAction.REQUEST_MULE, muleRequest);
-        ServerRequest<MuleRequest> botStartMuleRequest = new(RequestAction.REQUEST_MULE, muleRequest);
+        ServerRequest<MuleRequest> botStartMuleRequest = new(RequestAction.REQUEST_MULE, botMuleRequest);
 
         await SendDataAsync(muleSession.WebSocket, muleStartMuleRequest);
         await SendDataAsync(request.WebSocket, botStartMuleRequest);
@@ -54,8 +56,6 @@ internal sealed class RequestMuleRequestHandler : BaseRequestHandler, IRequestHa
     private async Task SendCancelMule(WebSocket websocket)
     {
         ServerRequest<object> cancelMule = new ServerRequest<object>(RequestAction.CANCEL_MULE);
-        var cancelMuleRequestStr = JsonConvert.SerializeObject(cancelMule);
         await SendDataAsync(websocket, cancelMule);
-        return;
     }
 }

@@ -25,11 +25,12 @@ internal sealed class MuleDoneRequestHandler : BaseRequestHandler, IRequestHandl
         MuleDoneRequest muleDoneRequest = request.Data.ToObject<MuleDoneRequest>();
         if (muleDoneRequest == null)
         {
+            logger.LogWarning("Unable to parse mule done request for connectionId: {connectionId}", request.ConnectionId);
             return;
         }
 
         var muleSession = _sessionFinder.FindBotByName(muleDoneRequest.MuleRsn);
-        ServerRequest<MuleDoneRequest> serverRequest = new ServerRequest<MuleDoneRequest>(RequestAction.MULE_DONE);
-        await SendDataAsync(request.WebSocket, serverRequest);
+        ServerRequest<MuleDoneRequest> serverRequest = new ServerRequest<MuleDoneRequest>(RequestAction.MULE_DONE, muleDoneRequest);
+        await SendDataAsync(muleSession.WebSocket, serverRequest);
     }
 }
